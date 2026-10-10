@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: shadow-ai-detector-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DB_HOST
+        sync: false          # Set manually in Render dashboard
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: shadow_ai_detector
+      - key: SECRET_KEY
+        generateValue: true  # Render auto-generates a secure random value
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "480"
+      - key: GEMINI_API_KEY
+        sync: false          # Set manually in Render dashboard
+      - key: LLM_MODEL
+        value: gemini-2.0-flash
+      - key: ALLOWED_ORIGINS
+        sync: false          # Set to your Vercel frontend URL
